@@ -1,56 +1,70 @@
 <template>
-    <main class="flex overflow-hidden flex-col pb-80 bg-gray-200 max-w-[360px]">
-      <section class="flex flex-col px-6 pt-28 w-full bg-sky-900 rounded-full">
-        <div class="flex z-10 flex-col px-8 pt-2.5 pb-6 mb-0 w-full bg-white rounded-xl shadow-[0px_4px_4px_rgba(0,0,0,0.45)]">
-          <div class="flex flex-col justify-center items-center self-center px-2.5 bg-white rounded-full aspect-square shadow-[0px_4px_4px_rgba(0,0,0,0.25)] w-[200px]">
-            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/606e65290639ce4fc3d66d0dd40b7a8f08dd63f377a0ee0c8ad9a2ab7e1b37cf?placeholderIfAbsent=true&apiKey=55e491f87d61487b9b7b3861f7502d13" alt="Login logo" class="object-contain w-full aspect-[1.06]" />
-          </div>
-          <h1 class="self-start mt-3.5 text-2xl font-semibold text-slate-900">
+  <main class="flex overflow-hidden flex-col min-h-screen bg-cover bg-center" :style="{ backgroundImage: `url(${backgroundImage})` }">
+    <div class="flex justify-center items-center min-h-screen bg-black bg-opacity-40">
+      <div class="flex z-10 flex-col items-center py-6 px-8 max-w-full bg-white rounded-xl shadow-[0px_4px_4px_rgba(0,0,0,0.45)] w-[531px] max-md:px-5">
+        <form class="flex flex-col self-stretch w-full text-base text-stone-900 max-md:max-w-full">
+          <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/2fe73ee0b7d23c2c13d1e5eca1344c4389f603bac3093fea44ff18f46ac4ff25?placeholderIfAbsent=true&apiKey=55e491f87d61487b9b7b3861f7502d13" alt="Login logo" class="object-contain self-center max-w-full aspect-square w-[200px] mb-6" />
+          <h1 class="self-start text-2xl font-semibold text-slate-900 mb-6">
             Iniciar Sesión
           </h1>
-          <form>
-            <label for="emailOrUsername" class="sr-only">Correo electrónico o usuario</label>
-            <input id="emailOrUsername" type="text" class="px-4 pt-5 pb-3 mt-5 text-base rounded-md border-b border-sky-900 bg-neutral-100 text-stone-900 w-full" placeholder="Correo electrónico o usuario" />
-            
-            <div class="relative mt-9">
-              <label for="password" class="sr-only">Contraseña</label>
-              <input id="password" type="password" class="px-5 pt-2 text-base whitespace-nowrap rounded-md border-b border-sky-900 bg-neutral-100 text-stone-900 w-full" placeholder="Contraseña" />
-              <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/9d7d617623d1a0a42163ef782ec36da3d68906bf05ae4668525139f7be670ea7?placeholderIfAbsent=true&apiKey=55e491f87d61487b9b7b3861f7502d13" alt="" class="object-contain absolute right-2 top-2 w-5 aspect-[0.53]" />
-            </div>
-            
-            <a href="#" class="block self-end mt-2.5 text-xs text-red-800">¿Olvidaste tu contraseña?</a>
-            
-            <button type="submit" class="self-center px-6 py-2.5 mt-7 max-w-full text-base font-bold text-white whitespace-nowrap bg-sky-900 rounded-xl border border-sky-900 border-solid w-[100px]">
-              Ingresar
-            </button>
-          </form>
-          
-          <a href="#" class="self-center px-4 py-3 mt-2.5 max-w-full text-base font-bold text-sky-900 rounded-md border-b border-sky-900 bg-neutral-100 w-[126px] text-center">
-            Crear Cuenta
-          </a>
-          
-          <hr class="shrink-0 mt-6 ml-5 h-0.5 border border-solid border-sky-900 border-opacity-80 w-[233px]" />
-          
-          <p class="self-center mt-3 ml-3 text-xs text-sky-900">Otras opciones</p>
-          
-          <div class="flex gap-4 self-center mt-4 max-w-full w-[137px]">
-            <a href="#" class="flex flex-col justify-center items-center px-1.5 rounded-full bg-zinc-300 h-[35px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] w-[35px]" aria-label="Login with Facebook">
-              <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/dba8edadfe5710d86a6802f4ec40dd5c0946cce9b71138a9e6118f6612e83713?placeholderIfAbsent=true&apiKey=55e491f87d61487b9b7b3861f7502d13" alt="" class="object-contain aspect-square w-[23px]" />
-            </a>
-            <a href="#" class="flex flex-col justify-center items-center px-2 rounded-full bg-zinc-300 h-[35px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] w-[35px]" aria-label="Login with Google">
-              <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/88beac3430f7da8a23db6d6acfebd34437ec733c1962b4d78d2926bd0d4cd63a?placeholderIfAbsent=true&apiKey=55e491f87d61487b9b7b3861f7502d13" alt="" class="object-contain aspect-square w-[22px]" />
-            </a>
-            <a href="#" class="flex flex-col justify-center items-center px-1.5 rounded-full bg-zinc-300 h-[35px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] w-[35px]" aria-label="Login with Apple">
-              <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/f8db13d9d0eb57af853e5c18885a918abc9a8e974aebe539d828ba72aa658c05?placeholderIfAbsent=true&apiKey=55e491f87d61487b9b7b3861f7502d13" alt="" class="object-contain aspect-square w-[23px]" />
-            </a>
+          <label for="emailInput" class="sr-only">Correo electrónico o usuario</label>
+          <input id="emailInput" v-model="emailOrUsername" type="text" placeholder="Correo electrónico o usuario" class="px-4 py-3 mb-4 rounded-md border border-sky-900 bg-neutral-100 w-full focus:outline-none focus:ring-2 focus:ring-sky-900 focus:border-transparent" />
+          <div class="relative mb-4">
+            <input id="passwordInput" v-model="password" :type="showPassword ? 'text' : 'password'" placeholder="Contraseña" class="px-4 py-3 rounded-md border border-sky-900 bg-neutral-100 w-full focus:outline-none focus:ring-2 focus:ring-sky-900 focus:border-transparent" />
+            <button type="button" @click="togglePasswordVisibility" class="absolute right-3 top-1/2 transform -translate-y-1/2 focus:outline-none">
+              <img loading="lazy" :src="showPassword ? eyeClosedIcon : eyeOpenIcon" alt="Toggle password visibility" class="w-5 h-5" />            </button>
           </div>
+          <a href="#" class="self-end mb-4 text-xs text-red-800">¿Olvidaste tu contraseña?</a>
+          <button type="submit" @click.prevent="login" class="px-4 py-3 mb-4 text-base font-bold text-white bg-sky-900 rounded-md border border-sky-900 w-full hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-900 focus:ring-offset-2">
+            Ingresar
+          </button>
+        </form>
+        <button @click="goToRegister" class="px-4 py-3 mb-6 text-base font-bold text-sky-900 rounded-md border border-sky-900 bg-neutral-100 w-full hover:bg-neutral-200 focus:outline-none focus:ring-2 focus:ring-sky-900 focus:ring-offset-2">
+          Crear Cuenta
+        </button>
+        <div class="shrink-0 mb-4 max-w-full h-px border border-solid border-sky-900 border-opacity-80 w-full"></div>
+        <p class="mt-3.5 text-xs text-sky-900">Otras opciones</p>
+        <div class="flex gap-4 items-start mt-5 max-w-full w-[182px]">
+          <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/5b829b7031e03ea51ef02b9a26a78650551580d5b02868516a6831b2f3331b8f?placeholderIfAbsent=true&apiKey=55e491f87d61487b9b7b3861f7502d13" alt="Social login option 1" class="object-contain shrink-0 w-[49px] h-[49px] rounded-full" />
+          <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/cc947fb46aec16834cfb512877280e4cae820a0a90606dbb7e80870b02fe1fe3?placeholderIfAbsent=true&apiKey=55e491f87d61487b9b7b3861f7502d13" alt="Social login option 2" class="object-contain shrink-0 w-[49px] h-[49px] rounded-full" />
+          <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/95a67c6ff86e6436890e0e7205afc7e71d103127c48880ebe17ee2ce36b2eca1?placeholderIfAbsent=true&apiKey=55e491f87d61487b9b7b3861f7502d13" alt="Social login option 3" class="object-contain shrink-0 w-[49px] h-[49px] rounded-full" />
         </div>
-      </section>
-    </main>
-  </template>
-  
-  <style scoped>
-  builder-component {
-    max-width: none !important;
+        </div>
+      </div>
+    
+  </main>
+</template>
+
+
+<script>
+import eyeClosedIcon from '@/assets/closed.png';
+import eyeOpenIcon from '@/assets/open.png';
+
+export default {
+  data() {
+    return {
+      emailOrUsername: '',
+      password: '',
+      backgroundImage: require('@/assets/fondo.png'), // Ruta de la imagen de fondo
+      showPassword: false,
+      eyeClosedIcon,
+      eyeOpenIcon
+    };
+  },
+  methods: {
+    togglePasswordVisibility() {
+      this.showPassword = !this.showPassword;
+      const passwordInput = document.getElementById('passwordInput');
+      passwordInput.type = this.showPassword ? 'text' : 'password';
+    },
+    login() {
+      // Aquí puedes agregar la lógica de autenticación
+      // Si la autenticación es exitosa, redirige a la pantalla principal
+      this.$router.push('/');
+    },
+    goToRegister() {
+      this.$router.push('/register');
+    }
   }
-  </style>
+};
+</script>
