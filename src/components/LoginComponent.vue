@@ -37,6 +37,7 @@
 
 
 <script>
+import axios from 'axios';
 import eyeClosedIcon from '@/assets/closed.png';
 import eyeOpenIcon from '@/assets/open.png';
 
@@ -57,10 +58,24 @@ export default {
       const passwordInput = document.getElementById('passwordInput');
       passwordInput.type = this.showPassword ? 'text' : 'password';
     },
-    login() {
-      // Aquí puedes agregar la lógica de autenticación
-      // Si la autenticación es exitosa, redirige a la pantalla principal
-      this.$router.push('/');
+    async login() {
+      try {
+        const response = await axios.post('http://127.0.0.1:8000/api/login', {
+          email: this.emailOrUsername,
+          password: this.password
+        });
+        
+        if (response.data.token) {
+          // Guardar el token en el almacenamiento local o en una cookie
+          localStorage.setItem('token', response.data.token);
+          // Redirigir a la pantalla principal
+          this.$router.push('/');
+        } else {
+          alert('Usuario y/o contraseña inválida');
+        }
+      } catch (error) {
+        alert('Error al iniciar sesión: ' + error.response.data.msg);
+      }
     },
     goToRegister() {
       this.$router.push('/register');
