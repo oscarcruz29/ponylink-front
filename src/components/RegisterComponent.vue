@@ -12,8 +12,12 @@
           Crear Cuenta
         </h1>
         <form @submit.prevent="handleSubmit" class="w-full">
+          <label for="nameInput" class="sr-only">Nombre</label>
+          <input id="nameInput" v-model="username" type="text" placeholder="Nombre" class="w-full px-4 py-4 mt-3 text-base rounded-md border-b border-sky-900 bg-neutral-100 focus:outline-none focus:ring-2 focus:ring-sky-900 focus:border-transparent" />
+
           <label for="emailInput" class="sr-only">Correo electrónico o usuario</label>
-          <input id="emailInput" type="text" placeholder="Correo electrónico o usuario" class="w-full px-4 py-4 mt-3 text-base rounded-md border-b border-sky-900 bg-neutral-100 focus:outline-none focus:ring-2 focus:ring-sky-900 focus:border-transparent" />
+          <input id="emailInput" v-model="email" type="text" placeholder="Correo electrónico o usuario" class="w-full px-4 py-4 mt-3 text-base rounded-md border-b border-sky-900 bg-neutral-100 focus:outline-none focus:ring-2 focus:ring-sky-900 focus:border-transparent" />
+          
           
           <div class="relative mb-4">
             <input id="passwordInput" v-model="password" :type="showPassword ? 'text' : 'password'" placeholder="Contraseña" class="w-full px-4 py-4 mt-3 text-base rounded-md border-b border-sky-900 bg-neutral-100 focus:outline-none focus:ring-2 focus:ring-sky-900 focus:border-transparent" />
@@ -72,6 +76,7 @@
 <script>
 import eyeClosedIcon from '@/assets/closed.png';
 import eyeOpenIcon from '@/assets/open.png';
+import axios from 'axios';
 
 export default {
   data() {
@@ -87,11 +92,6 @@ export default {
     }
   },
   methods: {
-    register() {
-      // Aquí puedes agregar la lógica de registro
-      // Si el registro es exitoso, redirige a la pantalla principal
-      this.$router.push('/');
-    },
     togglePasswordVisibility() {
       this.showPassword = !this.showPassword;
       const passwordInput = document.getElementById('passwordInput');
@@ -100,8 +100,32 @@ export default {
     toggleConfirmPassword() {
       this.showConfirmPassword = !this.showConfirmPassword
     },
+    async register() {
+      try {
+        const response = await axios.post('http://127.0.0.1:8000/api/registrar', {
+          name: this.username,
+          email: this.email,
+          password: this.password
+        });
+        
+        if (response.data.msg === 'success') {
+          alert('Registro exitoso');
+          // Redirigir al login
+          this.$router.push('/login');
+        } else {
+          alert('Error en el registro');
+        }
+      } catch (error) {
+        if (error.response && error.response.status === 422) {
+          // Manejar error de correo electrónico duplicado
+          alert('El correo electrónico ya está registrado.');
+        } else {
+          alert('Error al registrar: ' + error.response.data.msg);
+        }
+      }
+    },
     handleSubmit() {
-      // Handle form submission
+      this.register();
     }
   }
 }

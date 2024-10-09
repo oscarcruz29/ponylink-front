@@ -79,6 +79,7 @@ export default {
         if (response.data.token) {
           // Guardar el token en el almacenamiento local o en una cookie
           localStorage.setItem('token', response.data.token);
+          alert('Inicio de sesión exitoso');
           // Redirigir a la pantalla principal
           this.$router.push('/');
         } else {
