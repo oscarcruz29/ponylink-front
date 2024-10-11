@@ -18,9 +18,8 @@
           <div class="relative mb-4">
             <input id="passwordInput" v-model="password" :type="showPassword ? 'text' : 'password'" placeholder="Contraseña" class="w-full px-4 py-4 mt-3 text-base rounded-md border-b border-sky-900 bg-neutral-100 focus:outline-none focus:ring-2 focus:ring-sky-900 focus:border-transparent" />
             <button type="button" @click="togglePasswordVisibility" class="absolute right-3 top-1/2 transform -translate-y-1/2 focus:outline-none flex items-center justify-center">
-  <img loading="lazy" :src="showPassword ? eyeClosedIcon : eyeOpenIcon" alt="Toggle password visibility" class="w-5 h-5" />
-</button>
-
+              <img loading="lazy" :src="showPassword ? eyeClosedIcon : eyeOpenIcon" alt="Toggle password visibility" class="w-5 h-5" />
+            </button>
           </div>
 
           <a href="#" class="self-end mb-4 text-xs text-red-800">¿Olvidaste tu contraseña?</a>
@@ -29,11 +28,9 @@
             Ingresar
           </button>
         </form>
-
         <button @click="goToRegister" class="px-4 py-3 mb-6 text-base font-bold text-sky-900 rounded-md border border-sky-900 bg-neutral-100 w-full hover:bg-neutral-200 focus:outline-none focus:ring-2 focus:ring-sky-900 focus:ring-offset-2">
           Crear Cuenta
         </button>
-
         <div class="shrink-0 mb-4 max-w-full h-px border border-solid border-sky-900 border-opacity-80 w-full"></div>
         <p class="mt-3.5 text-xs text-sky-900">Otras opciones</p>
 
@@ -42,6 +39,11 @@
           <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/cc947fb46aec16834cfb512877280e4cae820a0a90606dbb7e80870b02fe1fe3?placeholderIfAbsent=true&apiKey=55e491f87d61487b9b7b3861f7502d13" alt="Social login option 2" class="object-contain shrink-0 w-[49px] h-[49px] rounded-full" />
           <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/95a67c6ff86e6436890e0e7205afc7e71d103127c48880ebe17ee2ce36b2eca1?placeholderIfAbsent=true&apiKey=55e491f87d61487b9b7b3861f7502d13" alt="Social login option 3" class="object-contain shrink-0 w-[49px] h-[49px] rounded-full" />
         </div>
+
+        <!-- Botón para ir al perfil -->
+        <button @click="goToProfile" class="px-4 py-3 mt-4 text-base font-bold text-white bg-green-600 rounded-md border border-green-600 w-full hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2">
+          Ir al Perfil
+        </button>
       </div>
     </div>
   </main>
@@ -80,8 +82,8 @@ export default {
           // Guardar el token en el almacenamiento local o en una cookie
           localStorage.setItem('token', response.data.token);
           alert('Inicio de sesión exitoso');
-          // Redirigir a la pantalla principal
-          this.$router.push('/');
+          // Redirigir a la pantalla de perfil
+          this.$router.push('/profile');
         } else {
           alert('Usuario y/o contraseña inválida');
         }
@@ -91,6 +93,9 @@ export default {
     },
     goToRegister() {
       this.$router.push('/register');
+    },
+    goToProfile() {
+      this.$router.push('/profile');
     }
   }
 };
