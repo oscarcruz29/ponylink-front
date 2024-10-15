@@ -1,7 +1,6 @@
-<!-- src/App.vue -->
 <template>
   <div id="app">
-    <Navbar v-if="!isLoginView" />
+    <Navbar v-if="!isAuthView && !isDashboardView" />
     <router-view />
   </div>
 </template>
@@ -18,8 +17,9 @@ export default {
   },
   setup() {
     const route = useRoute();
-    const isLoginView = computed(() => route.path === '/login');
-    return { isLoginView };
+    const isAuthView = computed(() => route.path === '/login' || route.path === '/register');
+    const isDashboardView = computed(() => route.path === '/');
+    return { isAuthView, isDashboardView };
   },
 };
 </script>

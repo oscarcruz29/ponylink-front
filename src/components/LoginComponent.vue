@@ -40,10 +40,7 @@
           <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/95a67c6ff86e6436890e0e7205afc7e71d103127c48880ebe17ee2ce36b2eca1?placeholderIfAbsent=true&apiKey=55e491f87d61487b9b7b3861f7502d13" alt="Social login option 3" class="object-contain shrink-0 w-[49px] h-[49px] rounded-full" />
         </div>
 
-        <!-- Botón para ir al perfil -->
-        <button @click="goToProfile" class="px-4 py-3 mt-4 text-base font-bold text-white bg-green-600 rounded-md border border-green-600 w-full hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2">
-          Ir al Perfil
-        </button>
+
       </div>
     </div>
   </main>
