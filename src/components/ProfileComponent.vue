@@ -106,22 +106,21 @@
 <section v-if="showConfig" class="mt-4 p-4 bg-[#B6C4D6] rounded-xl shadow-md max-w-[600px] w-full">
   <h3 class="text-xl font-bold mb-4">Configuración</h3>
 
-  <!-- Sección de Editar perfil y CV -->
-  <div class="flex gap-5 justify-between py-3.5 pl-3 bg-white rounded-xl border border-solid border-neutral-500 shadow-md transition-transform duration-300 ease-in-out hover:shadow-lg hover:scale-105"> <!-- Agregado efecto hover -->
-    <div class="flex gap-3">
-      <div class="flex items-center justify-center bg-[#CCE2FF] rounded-lg h-[60px] w-[60px]">
-        <div class="flex items-center justify-center bg-[#CCE2FF] rounded-md h-[45px] w-[45px]">
-          <img src="@/assets/editar.png" :alt="iconAlt" class="object-contain w-[35px] h-[35px]" />
+        <!-- Sección de Editar perfil y CV -->
+      <div @click="goToEditProfile" class="flex gap-5 justify-between py-3.5 pl-3 bg-white rounded-xl border border-solid border-neutral-500 shadow-md transition-transform duration-300 ease-in-out hover:shadow-lg hover:scale-105">
+        <div class="flex gap-3">
+          <div class="flex items-center justify-center bg-[#CCE2FF] rounded-lg h-[60px] w-[60px]">
+            <div class="flex items-center justify-center bg-[#CCE2FF] rounded-md h-[45px] w-[45px]">
+              <img src="@/assets/editar.png" :alt="iconAlt" class="object-contain w-[35px] h-[35px]" />
+            </div>
+          </div>
+          <div class="flex flex-col self-start mt-2.5">
+            <h2 class="text-xl font-bold text-stone-900">Editar perfil y CV</h2>
+            <p class="mt-1.5 text-sm text-black">Actualiza y modifica tu perfil</p>
+          </div>
         </div>
+        <img src="../assets/flecha.png" alt="" class="object-contain shrink-0 my-auto w-8 aspect-[1.07]" />
       </div>
-      <div class="flex flex-col self-start mt-2.5">
-        <h2 class="text-xl font-bold text-stone-900">Editar perfil y CV</h2>
-        <p class="mt-1.5 text-sm text-black">Actualiza y modifica tu perfil</p>
-      </div>
-    </div>
-    <img src="../assets/flecha.png" alt="" class="object-contain shrink-0 my-auto w-8 aspect-[1.07]" />
-  </div>
-
   <!-- Sección de Privacidad -->
   <div class="flex gap-5 justify-between py-3.5 pl-3 mt-4 bg-white rounded-xl border border-solid border-neutral-500 shadow-md transition-transform duration-300 ease-in-out hover:shadow-lg hover:scale-105"> <!-- Agregado efecto hover -->
     <div class="flex gap-3">
@@ -184,15 +183,17 @@
 
 
 <script>
-import axios from 'axios';
 import { ref, onMounted } from 'vue';
-import backgroundImage from '@/assets/fondo2.png'; // Importa la imagen de fondo
+import axios from 'axios';
+import backgroundImage from '@/assets/fondo2.png'; 
+import { useRouter } from 'vue-router';
 
 export default {
   name: 'ProfileComponent',
   setup() {
     const profile = ref({});
-    const showConfig = ref(false); // Estado para controlar la visibilidad de la sección de configuración
+    const showConfig = ref(false); 
+    const router = useRouter(); 
 
     const actions = [
       { name: 'Contactar', icon: 'path_to_contact_icon', borderColor: 'border-sky-900' },
@@ -218,6 +219,10 @@ export default {
       showConfig.value = !showConfig.value; // Alterna la visibilidad de la sección de configuración
     };
 
+    const goToEditProfile = () => {
+      router.push('/edit-profile'); // Redirige a la vista de edición de perfil
+    };
+
     onMounted(fetchProfile);
 
     return {
@@ -226,6 +231,7 @@ export default {
       backgroundImage,
       showConfig,
       toggleConfig,
+      goToEditProfile, // Asegúrate de retornar el método
     };
   }
 };

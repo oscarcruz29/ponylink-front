@@ -3,7 +3,7 @@
     <div class="flex justify-center items-center min-h-screen bg-black bg-opacity-40">
       <div class="flex z-10 flex-col items-center py-6 px-8 max-w-full bg-white rounded-xl shadow-[0px_4px_4px_rgba(0,0,0,0.45)] w-[450px] max-md:px-5">
         <form class="flex flex-col self-stretch w-full text-base text-stone-900 max-md:max-w-full">
-          <!-- Ajuste del círculo de la imagen para evitar que se corte -->
+          
           <div class="w-[200px] h-[200px] rounded-full overflow-hidden self-center mb-6 shadow-[0px_4px_4px_rgba(0,0,0,0.45)]">
             <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/2fe73ee0b7d23c2c13d1e5eca1344c4389f603bac3093fea44ff18f46ac4ff25?placeholderIfAbsent=true&apiKey=55e491f87d61487b9b7b3861f7502d13" alt="Login logo" class="w-full h-full object-cover" />
           </div>
