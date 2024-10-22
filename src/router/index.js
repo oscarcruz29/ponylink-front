@@ -5,6 +5,7 @@ import HomeComponent from '../components/HomeComponent.vue';
 import FeedComponent from '../components/FeedComponent.vue';
 import ProfileComponent from '../components/ProfileComponent.vue';
 import EditProfileComponent from '../components/EditProfileComponent.vue';
+import EditPasswordComponent from '../components/EditPasswordComponent.vue';
 
 const routes = [
   { path: '/', component: HomeComponent }, // Ruta para el dashboard
@@ -13,6 +14,7 @@ const routes = [
   { path: '/feed', component: FeedComponent },
   { path: '/profile', component: ProfileComponent },
   { path: '/edit-profile', component: EditProfileComponent },
+  { path: '/edit-password', component: EditPasswordComponent },
 ];
 
 const router = createRouter({

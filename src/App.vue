@@ -1,25 +1,26 @@
 <template>
   <div id="app">
-    <Navbar v-if="!isAuthView && !isDashboardView" />
+    <NavbarComponent v-if="!isAuthView && !isDashboardView && !isEditPasswordView" />
     <router-view />
   </div>
 </template>
 
 <script>
-import Navbar from './components/Navbar.vue';
+import NavbarComponent from './components/NavbarComponent.vue';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
 export default {
   name: 'App',
   components: {
-    Navbar,
+    NavbarComponent,
   },
   setup() {
     const route = useRoute();
     const isAuthView = computed(() => route.path === '/login' || route.path === '/register');
     const isDashboardView = computed(() => route.path === '/');
-    return { isAuthView, isDashboardView };
+    const isEditPasswordView = computed(() => route.path === '/edit-password');
+    return { isAuthView, isDashboardView, isEditPasswordView };
   },
 };
 </script>
