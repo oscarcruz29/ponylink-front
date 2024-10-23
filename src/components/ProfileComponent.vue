@@ -122,7 +122,7 @@
         <img src="../assets/flecha.png" alt="" class="object-contain shrink-0 my-auto w-8 aspect-[1.07]" />
       </div>
   <!-- Sección de Privacidad -->
-  <div class="flex gap-5 justify-between py-3.5 pl-3 mt-4 bg-white rounded-xl border border-solid border-neutral-500 shadow-md transition-transform duration-300 ease-in-out hover:shadow-lg hover:scale-105"> <!-- Agregado efecto hover -->
+  <div @click="goToEditPassword" class="flex gap-5 justify-between py-3.5 pl-3 mt-4 bg-white rounded-xl border border-solid border-neutral-500 shadow-md transition-transform duration-300 ease-in-out hover:shadow-lg hover:scale-105">
     <div class="flex gap-3">
       <div class="flex items-center justify-center bg-[#CCE2FF] rounded-lg h-[60px] w-[60px]">
         <div class="flex items-center justify-center bg-[#CCE2FF] rounded-md h-[45px] w-[45px]">
@@ -182,11 +182,12 @@
 </template>
 
 
+
 <script>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import backgroundImage from '@/assets/fondo2.png'; 
 import { useRouter } from 'vue-router';
+import backgroundImage from '@/assets/fondo2.png'; 
 
 export default {
   name: 'ProfileComponent',
@@ -194,13 +195,11 @@ export default {
     const profile = ref({});
     const showConfig = ref(false); 
     const router = useRouter(); 
-
     const actions = [
       { name: 'Contactar', icon: 'path_to_contact_icon', borderColor: 'border-sky-900' },
       { name: 'Ver CV', icon: 'path_to_cv_icon', borderColor: 'border-sky-900' },
       { name: 'Buscando', icon: 'path_to_search_icon', borderColor: 'border-green-600' },
     ];
-
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem('token');
@@ -211,32 +210,35 @@ export default {
         });
         profile.value = { ...profile.value, ...response.data };
       } catch (error) {
-        alert('Error al cargar el perfil: ' + error.response.data.msg);
+        const errorMessage = error.response && error.response.data && error.response.data.msg
+          ? error.response.data.msg
+          : 'Error al cargar el perfil';
+        alert(errorMessage);
       }
     };
-
     const toggleConfig = () => {
       showConfig.value = !showConfig.value; // Alterna la visibilidad de la sección de configuración
     };
-
     const goToEditProfile = () => {
       router.push('/edit-profile'); // Redirige a la vista de edición de perfil
     };
-
+    const goToEditPassword = () => {
+      router.push('/edit-password'); // Redirige a la vista de edición de contraseña
+    };
     onMounted(fetchProfile);
-
     return {
       profile,
       actions,
-      backgroundImage,
       showConfig,
       toggleConfig,
-      goToEditProfile, // Asegúrate de retornar el método
+      goToEditProfile, 
+      backgroundImage,
+      fetchProfile,
+      goToEditPassword,
     };
   }
 };
 </script>
-
 <style scoped>
 /* Aquí puedes agregar estilos específicos para el ProfileComponent */
 </style>
