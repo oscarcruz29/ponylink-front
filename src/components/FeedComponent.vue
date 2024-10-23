@@ -1,260 +1,227 @@
 <template>
-  <div>
-    <h1>Bienvenido al Feed</h1>
-    <!-- Aquí agregas el Web Component -->
-    <job-card></job-card>
-    <user-card></user-card>
+  <div class="min-h-screen bg-[#F9FAFB] flex">
+    <aside class="w-1/4 max-w-[300px] p-6 space-y-6">
+      <header class="flex items-center justify-between bg-[#001839] text-white rounded-t-lg p-4 shadow-md">
+        <h2 class="text-xl font-bold tracking-wide">Eventos & Proyectos</h2>
+      </header>
+
+      <div
+        v-for="(event, index) in events"
+        :key="index"
+        class="rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 hover:shadow-2xl border border-gray-200"
+      >
+        <img :src="event.image" alt="Imagen del evento" class="w-full h-32 object-cover" />
+        <div class="bg-white p-4 space-y-2">
+          <h3 class="text-lg font-semibold text-[#001839]">{{ event.title }}</h3>
+          <p class="text-sm text-gray-500">{{ event.description }}</p>
+          <button class="mt-4 w-full bg-[#001839] text-white rounded-md py-2 hover:bg-[#A9C8E0] transition">
+            Ver más
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Columna de Publicaciones (centro) -->
+    <main class="w-2/4 p-4 overflow-y-auto">
+      <!-- Sección para Crear Publicación -->
+      <section class="flex flex-col rounded-lg w-full max-w-[1000px] bg-white shadow-lg border border-[#A7C7E0] p-6 mb-6 mt-2 transition duration-200 transform hover:shadow-xl hover:bg-[#F8FBFF]">
+        <header class="flex gap-6 items-start">
+          <img
+            loading="lazy"
+            src="https://cdn.builder.io/api/v1/image/assets/TEMP/3427795555feb36088d2eb6b44b3f41167f42b03c83757298d11092e9ab87c5c?placeholderIfAbsent=true&apiKey=55e491f87d61487b9b7b3861f7502d13"
+            alt="User profile picture"
+            class="object-contain rounded-full shadow-md w-[80px]"
+          />
+          <div class="flex flex-col grow relative">
+            <input
+              type="text"
+              aria-label="Publica una actualización"
+              placeholder="¿Qué estás pensando?"
+              class="px-4 py-4 rounded-xl bg-[#E7F3FF] text-neutral-700 placeholder:text-neutral-500 border border-[#A7C7E0] focus:border-blue-500 focus:outline-none transition duration-200 text-lg mb-4"
+            />
+            <div class="flex gap-4 items-center justify-end">
+              <button class="flex items-center justify-center bg-[#CCE2FF] rounded-md h-[40px] px-3 hover:bg-[#A9C8E0] transition duration-200 border border-[#A7C7E0] shadow-md hover:shadow-lg">
+                <img
+                  loading="lazy"
+                  src="../assets/imagen.png"
+                  alt="Attachment icon"
+                  class="object-contain w-[30px] h-[30px] mr-2"
+                />
+              </button>
+              <button class="flex items-center justify-center bg-[#CCE2FF] rounded-md h-[40px] px-3 hover:bg-[#A9C8E0] transition duration-200 border border-[#A7C7E0] shadow-md hover:shadow-lg">
+                <img
+                  loading="lazy"
+                  src="../assets/publicar.png"
+                  alt="Media options"
+                  class="object-contain w-[20px] h-[20px] mr-2"
+                />
+                <span class="text-base font-bold">Publicar</span>
+              </button>
+            </div>
+          </div>
+        </header>
+      </section>
+
+      <!-- Publicaciones -->
+     
+      <div class="space-y-4">
+        <section
+          v-for="(post, index) in posts"
+          :key="index"
+          class="flex flex-col rounded-lg w-full max-w-[1000px] bg-white shadow-lg border border-[#A7C7E0] p-6 mb-6 mt-2 transition duration-200 transform hover:shadow-xl hover:bg-[#F8FBFF]"
+        >
+          <header class="flex gap-6 items-start">
+            <img
+              loading="lazy"
+              src="https://cdn.builder.io/api/v1/image/assets/TEMP/3427795555feb36088d2eb6b44b3f41167f42b03c83757298d11092e9ab87c5c?placeholderIfAbsent=true&apiKey=55e491f87d61487b9b7b3861f7502d13"
+              alt="User profile picture"
+              class="object-contain rounded-full shadow-md w-[80px]"
+            />
+            <div>
+              <h1 class="text-lg font-bold text-[#001839]">Usuario</h1>
+              <p class="text-sm text-gray-500">Hace 2 horas</p>
+            </div>
+          </header>
+
+
+          <div class="mt-4 text-base text-black">
+            <h2 class="font-bold text-[#001839]">{{ post.title }}</h2>
+            <p class="mt-2">{{ post.content }}</p>
+          </div>
+
+          <div class="flex justify-between items-center mt-6">
+            <button 
+              v-if="post.type === 'job'" 
+              class="bg-[#001839]  text-white font-bold py-2 px-4 rounded-lg flex items-center transition-colors"
+            >
+              <img loading="lazy" src="../assets/apply.png" alt="Aplicar" class="w-5 h-5 mr-2" />
+              {{ post.buttonText }}
+            </button>
+
+            <div v-if="post.type === 'status'" class="flex items-center">
+              <span class="font-bold text-[#001839]">Estado:</span>
+              <span 
+                class="ml-2 px-3 py-1 text-white rounded-full"
+                :class="post.status === 'En busca de trabajo' ? 'bg-green-500' : 'bg-gray-400'"
+              >
+                {{ post.status }}
+              </span>
+            </div>
+
+            <button class="flex items-center text-[#001839]">
+              <img loading="lazy" src="../assets/megusta.png" alt="Me gusta" class="w-5 h-5 mr-1" />
+              Me gusta
+            </button>
+            <button class="flex items-center text-[#001839]">
+              <img loading="lazy" src="../assets/comentar.png" alt="Comentar" class="w-5 h-5 mr-1" />
+              Comentar
+            </button>
+            <button class="flex items-center text-[#001839]">
+              <img loading="lazy" src="../assets/compartir.png" alt="Compartir" class="w-5 h-5 mr-1" />
+              Compartir
+            </button>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Columna de Chat (derecha) -->
+    <aside class="flex flex-col w-1/3 max-w-[350px] bg-gradient-to-br from-[#E6F0FF] to-[#CCE2FF] rounded-lg shadow-xl border border-gray-300 p-4 ml-auto">
+      <header class="flex items-center justify-between bg-[#001839] text-white rounded-t-lg p-3">
+        <h2 class="text-lg font-semibold">Chats</h2>
+        <button class="text-sm bg-[#CCE2FF] text-[#001839] px-3 py-1 rounded-full hover:bg-[#A9C8E0] transition">+ Nuevo Chat</button>
+      </header>
+
+      <div class="flex flex-col overflow-y-auto max-h-[500px] p-2 space-y-4">
+        <div
+          v-for="(chat, index) in chats"
+          :key="index"
+          class="flex items-center gap-4 p-3 bg-white rounded-lg shadow hover:shadow-md transition"
+        >
+          <img
+            :src="chat.avatar"
+            alt="Profile"
+            class="w-12 h-12 rounded-full object-cover"
+          />
+          <div class="flex flex-col">
+            <span class="font-semibold text-[#001839]">{{ chat.name }}</span>
+            <p class="text-sm text-gray-600">{{ chat.message }}</p>
+          </div>
+          <span class="ml-auto text-xs text-gray-400">3 min</span>
+        </div>
+      </div>
+    </aside>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'FeedComponent',
-  mounted() {
-    // Registrar el Web Component al cargar este componente de Vue
-    class JobCard extends HTMLElement {
-      constructor() {
-        super();
-        const shadow = this.attachShadow({ mode: 'open' });
-        const template = document.createElement('template');
-        template.innerHTML = `
-         <style>
-        .card {
-          border: 1px solid #ddd;
-          border-radius: 8px;
-          box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-          padding: 16px;
-          max-width: 600px;
-          font-family: Arial, sans-serif;
-        }
-        .logo {
-          width: 50px;
-          height: 50px;
-          border-radius: 50%;
-          object-fit: cover;
-        }
-        .company {
-          font-size: 1.2em;
-          font-weight: bold;
-        }
-        .job-title {
-          font-size: 1.1em;
-          margin: 10px 0;
-        }
-        .requirements {
-          margin-top: 16px;
-        }
-        .actions {
-          margin-top: 16px;
-          flex-direction: row;
-          justify-content: space-around;
-        }
-        button {
-          padding: 8px 16px;
-          background-color: #007BFF;
-          color: white;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
-        }
-        .header{
-          display: flex;
-          flex-direction: row;
-        }
-        .company-info{
-            margin-left: 10px;
-        }
-        .no-boton{
-            background-color: white;
-            color: black;
-        }
-        .boton{
-            margin-left: 210px;
-            background-color: #E8EDFF;
-            color: #001839;
-        }
-         a {
-          text-decoration: none;
-          color: #555;
-          font-size: 0.9em;
-          margin-right: 15px;
-        }
-      </style>
-
-          <div class="card">
-        <div class="header">
-          <img src="https://via.placeholder.com/50" alt="Company Logo" class="logo">
-          <div class="company-info">
-            <div class="company">TechMed S.A</div>
-            <div class="industry">Empresa de Tecnología</div>
-          </div>
-        </div>
-        <div class="job-info">
-          <div class="job-title">Desarrollador(a) Frontend - Remoto</div>
-          <p>
-            En TechMed S.A, buscamos un/a Desarrollador/a Frontend con experiencia en HTML,
-            CSS, JavaScript y frameworks como Vue.js o React. Si te apasiona crear interfaces 
-            de usuario intuitivas y tienes experiencia trabajando con equipos ágiles, ¡queremos conocerte!
-          </p>
-          <div class="requirements">
-            <strong>Requisitos:</strong>
-            <ul>
-              <li>Al menos 2 años de experiencia en desarrollo frontend.</li>
-              <li>Conocimientos sólidos en Vue.js o React.</li>
-              <li>Experiencia en diseño responsive y buenas prácticas de UX/UI.</li>
-            </ul>
-          </div>
-        </div>
-        <div class="actions">
-            <a href="#">Me gusta</a>
-            <a href="#">Comentar</a>
-            <a href="#">Compartir</a>
-            <button class="boton">Aplicar</button>
-        </div>
-    </div>
-        `;
-        shadow.appendChild(template.content.cloneNode(true));
+  data() {
+    return {
+      events: [
+        { 
+          title: 'Lanzamiento del Proyecto X', 
+          description: 'Únete al lanzamiento de nuestro nuevo proyecto.', 
+          image: 'https://via.placeholder.com/300x150?text=Proyecto+X' 
+        },
+        { 
+          title: 'Conferencia de Tecnología', 
+          description: 'No te pierdas nuestra conferencia el próximo viernes.', 
+          image: 'https://via.placeholder.com/300x150?text=Proyecto+X' 
+        },
+      ],
+      posts: [
+        { 
+          type: 'job', 
+          title: 'Oferta de trabajo: Desarrollador Frontend', 
+          content: 'Estamos buscando un desarrollador frontend con experiencia en frameworks modernos como Vue.js. El candidato ideal deberá colaborar con diseñadores y desarrolladores backend para crear interfaces atractivas y funcionales.', 
+          buttonText: 'Aplicar ahora' 
+        },
+        { 
+          type: 'status', 
+          title: 'Cambio de estado', 
+          content: 'He actualizado mi estado para reflejar mi situación actual. Estoy "En busca de trabajo" y abierto a nuevas oportunidades donde pueda seguir desarrollándome profesionalmente.', 
+          status: 'En busca de trabajo' 
+        },
+      ],
+      chats: [
+        { name: 'Ana', message: 'Hola, ¿cómo estás?', avatar: 'https://via.placeholder.com/50' },
+        { name: 'Carlos', message: '¿Revisaste el reporte?', avatar: 'https://via.placeholder.com/50' },
+      ],
+    };
+  },
+  methods: {
+    getStatusClass(status) {
+      switch (status) {
+        case 'En busca de trabajo':
+          return 'bg-green-100 text-green-800';
+        case 'Ocupado':
+          return 'bg-red-100 text-red-800';
+        case 'Pendiente':
+          return 'bg-yellow-100 text-yellow-800';
+        default:
+          return 'bg-gray-100 text-gray-800';
       }
-    }
-
-    customElements.define('job-card', JobCard);
-
-    // Registrar el Web Component al cargar este componente de Vue
-    class UserCard extends HTMLElement {
-      constructor() {
-        super();
-
-        // Crear shadow root
-        const shadow = this.attachShadow({ mode: 'open' });
-
-        // Crear el template de HTML
-        const template = document.createElement('template');
-        template.innerHTML = `
-          <style>
-        .card {
-          border: 1px solid #ddd;
-          border-radius: 8px;
-          box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-          padding: 16px;
-          max-width: 600px;
-          font-family: Arial, sans-serif;
-          margin-bottom: 20px;
-        }
-        .header {
-          display: flex;
-          align-items: center;
-        }
-        .logo {
-          width: 50px;
-          height: 50px;
-          border-radius: 50%;
-          object-fit: cover;
-        }
-        .user-info {
-          margin-left: 10px;
-        }
-        .user-name {
-          font-size: 1.2em;
-          font-weight: bold;
-          margin: 0;
-        }
-        .user-job {
-          font-size: 0.9em;
-          color: #666;
-          margin: 0;
-        }
-        .content {
-          margin-top: 10px;
-          font-size: 0.95em;
-        }
-        .status {
-          display: flex;
-          align-items: center;
-          margin-top: 10px;
-        }
-        .status span {
-          margin-left: 5px;
-          background-color: #d4edda;
-          color: #155724;
-          padding: 5px 10px;
-          border-radius: 15px;
-          font-size: 0.9em;
-        }
-        .actions {
-          margin-top: 15px;
-          display: flex;
-          justify-content: space-between;
-        }
-        .actions button {
-          background-color: #007BFF;
-          color: white;
-          padding: 8px 16px;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
-        }
-        .actions button:hover {
-          background-color: #0056b3;
-        }
-        .social-actions {
-            margin-top: 10px;
-          display: flex;
-          justify-content: space-around;
-          width: 250px;
-        }
-        .social-actions a {
-          text-decoration: none;
-          color: #555;
-          font-size: 0.9em;
-          margin-right: 15px;
-        }
-      </style>
-
-          <div class="card">
-        <div class="header">
-          <img src="https://via.placeholder.com/50" alt="User Avatar" class="logo">
-          <div class="user-info">
-            <p class="user-name">Sara García</p>
-            <p class="user-job">Desarrolladora web</p>
-          </div>
-        </div>
-        <div class="content">
-          ¡Me siento muy orgullosa de haber completado el desarrollo de mi sistema de punto de venta!
-          Ha sido un reto emocionante trabajar con Laravel y Vue.js. ¡Listo para nuevos desafíos!
-          <span>#DesarrolloWeb #ProyectosTI</span>
-        </div>
-        <div class="status">
-          <!--img src="https://via.placeholder.com/20" alt="Search Icon"-->
-          <span>Buscando trabajo</span>
-        </div>
-        <div class="social-actions">
-          <a href="#">Me gusta</a>
-          <a href="#">Comentar</a>
-          <a href="#">Compartir</a>
-        </div>
-      </div>
-        `;
-
-        // Adjuntar el contenido del template al shadow DOM
-        shadow.appendChild(template.content.cloneNode(true));
-      }
-    }
-
-    // Definir el nuevo Web Component
-    customElements.define('user-card', UserCard);
+    },
   },
 };
 </script>
 
 <style scoped>
-/* Aquí puedes agregar estilos específicos para el FeedComponent */
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #F9FAFB;
+}
+
+input::placeholder {
+  color: #B0B0B0;
+}
+
+button {
+  transition: transform 0.2s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
 </style>
-
-
-
-
-
-
-
-
-
