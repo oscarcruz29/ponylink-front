@@ -61,40 +61,41 @@
     <div class="md:hidden fixed bottom-0 left-0 right-0 z-50">
       <section class="flex flex-col w-full">
         <div class="flex gap-5 justify-between px-7 py-2.5 bg-blue-100 border-t-2 border-slate-900 rounded-t-3xl shadow-lg">
-          <button class="focus:outline-none bg-white rounded-full p-2 shadow-md hover:bg-blue-50 transform hover:scale-110 hover:-translate-y-1 transition-all duration-200 active:scale-95">
+          <router-link to="/feed" class="focus:outline-none bg-white rounded-full p-2 shadow-md hover:bg-blue-50 transform hover:scale-110 hover:-translate-y-1 transition-all duration-200 active:scale-95">
             <img 
               loading="lazy" 
               src="../assets/home.png" 
               class="object-contain shrink-0 aspect-[0.98] w-[40px]" 
               alt="Inicio" 
             />
-          </button>
+          </router-link>
           
-      <!-- Botón de Chats -->
-      <router-link to="/chats" class="focus:outline-none bg-white rounded-full p-2 shadow-md hover:bg-blue-50 transform hover:scale-110 hover:-translate-y-1 transition-all duration-200 active:scale-95">
-          <img 
-            loading="lazy" 
-            src="../assets/chats.png" 
-            class="object-contain shrink-0 aspect-[0.98] w-[40px]"
-            alt="Chats"
-          />
-        </router-link>
-          <button @click="toggleNotifications" class="focus:outline-none bg-white rounded-full p-2 shadow-md hover:bg-blue-50 transform hover:scale-110 hover:-translate-y-1 transition-all duration-200 active:scale-95">
+          <router-link to="/chats" class="focus:outline-none bg-white rounded-full p-2 shadow-md hover:bg-blue-50 transform hover:scale-110 hover:-translate-y-1 transition-all duration-200 active:scale-95">
             <img 
               loading="lazy" 
-              src="../assets/notifications.png" 
-              class="object-contain shrink-0 aspect-[0.98] w-[40px]" 
-              alt="Chat" 
+              src="../assets/chats.png" 
+              class="object-contain shrink-0 aspect-[0.98] w-[40px]"
+              alt="Chats"
             />
-          </button>
-          <button class="focus:outline-none bg-white rounded-full p-2 shadow-md hover:bg-blue-50 transform hover:scale-110 hover:-translate-y-1 transition-all duration-200 active:scale-95">
+          </router-link>
+          
+          <router-link to="/notifications-mobile" class="focus:outline-none bg-white rounded-full p-2 shadow-md hover:bg-blue-50 transform hover:scale-110 hover:-translate-y-1 transition-all duration-200 active:scale-95">
+  <img 
+    loading="lazy" 
+    src="../assets/notifications.png" 
+    class="object-contain shrink-0 aspect-[0.98] w-[40px]" 
+    alt="Notificaciones" 
+  />
+</router-link>
+          
+          <router-link to="/profile" class="focus:outline-none bg-white rounded-full p-2 shadow-md hover:bg-blue-50 transform hover:scale-110 hover:-translate-y-1 transition-all duration-200 active:scale-95">
             <img 
               loading="lazy" 
               src="../assets/profile.png" 
               class="object-contain shrink-0 aspect-[0.98] w-[40px]" 
               alt="Perfil" 
             />
-          </button>
+          </router-link>
         </div>
       </section>
     </div>
@@ -121,10 +122,12 @@ header {
 <script>
 import NotificationsComponent from './NotificationsComponent.vue';
 
+
 export default {
   name: 'NavbarComponent',
   components: {
     NotificationsComponent,
+   
   },
   data() {
     return {
@@ -133,13 +136,14 @@ export default {
   },
   methods: {
     toggleNotifications() {
-      this.isNotificationsOpen = !this.isNotificationsOpen;
+      if (window.innerWidth <= 768) { // Punto de quiebre para móvil
+        this.$router.push('/notifications-mobile');
+      } else {
+        this.isNotificationsOpen = !this.isNotificationsOpen;
+      }
     },
     closeNotifications() {
       this.isNotificationsOpen = false;
-    },
-    goToNotifications() {
-      this.$router.push('/notifications');
     },
   },
 };

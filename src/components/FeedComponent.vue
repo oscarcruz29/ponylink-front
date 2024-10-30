@@ -241,7 +241,7 @@ export default {
        { name: 'Ana', message: 'Hola, ¿cómo estás?', avatar: 'https://via.placeholder.com/50' },
        { name: 'Carlos', message: '¿Revisaste el reporte?', avatar: 'https://via.placeholder.com/50' },
      ],
-     isSidebarOpen: false, // Controla la visibilidad del sidebar en móviles
+     isSidebarOpen: false, 
 
    };
  },
