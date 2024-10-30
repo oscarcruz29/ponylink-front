@@ -57,6 +57,7 @@
             <div class="flex flex-col space-y-2">
               <label for="fullName" class="text-xl font-bold text-slate-900 pl-2">Nombre</label>
               <input
+                v-model="fullName"
                 id="fullName"
                 type="text"
                 class="px-4 py-4 w-full bg-blue-100 rounded-md border-b-2 border-slate-900 text-neutral-700"
@@ -69,6 +70,7 @@
             <div class="flex flex-col space-y-2">
               <label for="email" class="text-xl font-bold text-slate-900 pl-2">Correo Electrónico</label>
               <input
+                v-model="email"
                 id="email"
                 type="email"
                 class="px-4 py-4 w-full bg-blue-100 rounded-md border-b-2 border-slate-900 text-neutral-700"
@@ -81,6 +83,7 @@
             <div class="flex flex-col space-y-2">
               <label for="phone" class="text-xl font-bold text-slate-900 pl-2">Número de Teléfono</label>
               <input
+                v-model="phone"
                 id="phone"
                 type="tel"
                 class="px-4 py-4 w-full bg-blue-100 rounded-md border-b-2 border-slate-900 text-neutral-700"
@@ -93,6 +96,7 @@
             <div class="flex flex-col space-y-2">
               <label for="location" class="text-xl font-bold text-slate-900 pl-2">Ubicación</label>
               <input
+                v-model="location"
                 id="location"
                 type="text"
                 class="px-4 py-4 w-full bg-blue-100 rounded-md border-b-2 border-slate-900 text-neutral-700"
@@ -668,7 +672,7 @@
 
 <!-- Botón Guardar al final del formulario -->
 <button
-@click="saveProfile"
+@click="guardarInformacion"
 type="submit"
 class="mt-6 px-6 py-3 bg-green-100 rounded-xl border-b-2 border-slate-900 text-neutral-700 font-semibold shadow-md transition-transform transform hover:scale-105 flex items-center justify-center"
 >
@@ -712,12 +716,17 @@ max-height: 0;
 </style>
 
 <script>
+import axios from 'axios';
 import backgroundImage from '@/assets/fondo2.png';
 
 export default {
 name: 'EditProfileComponent',
 data() {
   return {
+    fullName: '',              // Nombre completo
+    email: '',                 // Correo electrónico
+    phone: '',                 // Número de teléfono
+    location: '',              // Ubicación
     backgroundImage,
     isEducationFormVisible: false,
     isExperienceFormVisible: false,
@@ -755,9 +764,41 @@ methods: {
     this.isLanguageFormVisible = !this.isLanguageFormVisible;
   },
   guardarInformacion() {
-  // Aquí recolectas los datos y los envías a la API o los manejas como prefieras.
-  console.log("Información guardada exitosamente.");
-},
+      // Crear el objeto FormData para enviar los datos y el archivo de imagen
+      const formData = new FormData();
+      formData.append('name', this.fullName);
+      formData.append('email', this.email);
+      formData.append('telefono', this.phone);
+      formData.append('ubicacion', this.location);
+      
+      // Agregar la imagen de perfil si el usuario seleccionó una
+      /*if (this.profilePhoto) {
+        formData.append('profile_photo_path', this.profilePhoto);
+      }*/
+
+      // Enviar los datos a la API
+      axios.post('http://127.0.0.1:8000/api/editarInfoPersonal', formData, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    .then(() => {
+      alert('Perfil actualizado correctamente');
+    })
+    .catch(error => {
+      if (error.response && error.response.data) {
+        console.error('Errores de validación:', error.response.data.errors); // Muestra los errores específicos
+        alert('Hubo un problema al actualizar el perfil: ' + JSON.stringify(error.response.data.errors));
+      } else {
+        alert('Hubo un problema al actualizar el perfil');
+      }
+    });
+  },
+
+  onFileChange(event) {
+    this.profilePhoto = event.target.files[0];
+  },
 togglePersonalProjectForm() {
     this.isPersonalProjectFormVisible = !this.isPersonalProjectFormVisible;
   },
