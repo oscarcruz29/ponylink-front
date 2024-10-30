@@ -17,7 +17,7 @@
                 </div>
               </div>
               <div class="flex flex-col ml-2 w-[70%] max-md:ml-0 max-md:w-full">
-                <!-- Corregido: Input habilitado para buscar -->
+                
                 <form class="flex items-center px-2 py-2 my-auto w-full text-xl font-bold text-black bg-blue-100 rounded-xl border-b-2 border-slate-900 shadow-md hover:shadow-lg transition duration-200">
                   <img
                     loading="lazy"
@@ -35,13 +35,13 @@
             </div>
           </div>
         </div>
-        <nav class="flex items-center ml-auto space-x-4 pr-4"> <!-- Alineación corregida hacia la derecha -->
+        <nav class="flex items-center ml-auto space-x-4 pr-4"> 
           <a href="#" class="focus:outline-none focus:ring-2 focus:ring-blue-500" tabindex="0">
             <img
               loading="lazy"
-              src="https://cdn.builder.io/api/v1/image/assets/TEMP/bebf125e5fa96ab29c5514535c6a5e3de5fd178c274952282cd2996a9da8c5c1?placeholderIfAbsent=true&apiKey=55e491f87d61487b9b7b3861f7502d13"
+              src="../assets/notifications.png"
               class="object-contain shrink-0 w-8 aspect-square transition-transform duration-200 hover:scale-105"
-              alt="Messages icon"
+              alt="Notifications icon"
             />
           </a>
           <a href="#" class="focus:outline-none focus:ring-2 focus:ring-blue-500" tabindex="0">
@@ -58,37 +58,39 @@
 
     <!-- Navbar móvil -->
     <div class="md:hidden fixed bottom-0 left-0 right-0 z-50">
-      <section class="flex flex-col rounded-none w-full">
-        <div class="flex gap-5 justify-between px-7 py-2.5 bg-blue-100 border-t-2 border-slate-900">
-          <button class="focus:outline-none">
+      <section class="flex flex-col w-full">
+        <div class="flex gap-5 justify-between px-7 py-2.5 bg-blue-100 border-t-2 border-slate-900 rounded-t-3xl shadow-lg">
+          <button class="focus:outline-none bg-white rounded-full p-2 shadow-md hover:bg-blue-50 transform hover:scale-110 hover:-translate-y-1 transition-all duration-200 active:scale-95">
             <img 
               loading="lazy" 
               src="../assets/home.png" 
-              class="object-contain shrink-0 aspect-[0.98] w-[50px]" 
+              class="object-contain shrink-0 aspect-[0.98] w-[40px]" 
               alt="Inicio" 
             />
           </button>
-          <button class="focus:outline-none">
-            <img 
-              loading="lazy" 
-              src="../assets/chats.png" 
-              class="object-contain shrink-0 aspect-[0.98] w-[50px]" 
-              alt="Buscar" 
-            />
-          </button>
-          <button class="focus:outline-none">
+          
+      <!-- Botón de Chats -->
+      <router-link to="/chats" class="focus:outline-none bg-white rounded-full p-2 shadow-md hover:bg-blue-50 transform hover:scale-110 hover:-translate-y-1 transition-all duration-200 active:scale-95">
+          <img 
+            loading="lazy" 
+            src="../assets/chats.png" 
+            class="object-contain shrink-0 aspect-[0.98] w-[40px]"
+            alt="Chats"
+          />
+        </router-link>
+          <button class="focus:outline-none bg-white rounded-full p-2 shadow-md hover:bg-blue-50 transform hover:scale-110 hover:-translate-y-1 transition-all duration-200 active:scale-95">
             <img 
               loading="lazy" 
               src="../assets/notifications.png" 
-              class="object-contain shrink-0 aspect-[0.98] w-[50px]" 
+              class="object-contain shrink-0 aspect-[0.98] w-[40px]" 
               alt="Chat" 
             />
           </button>
-          <button class="focus:outline-none">
+          <button class="focus:outline-none bg-white rounded-full p-2 shadow-md hover:bg-blue-50 transform hover:scale-110 hover:-translate-y-1 transition-all duration-200 active:scale-95">
             <img 
               loading="lazy" 
               src="../assets/profile.png" 
-              class="object-contain shrink-0 aspect-[0.98] w-[50px]" 
+              class="object-contain shrink-0 aspect-[0.98] w-[40px]" 
               alt="Perfil" 
             />
           </button>
@@ -113,22 +115,22 @@ header {
 }
 </style>
 
+
 <script>
 export default {
   name: 'NavbarComponent',
+  data() {
+    return {
+      isNotificationsOpen: false,
+    };
+  },
   methods: {
-    goToHome() {
-      this.$router.push('/feed');
+    toggleNotifications() {
+      this.isNotificationsOpen = !this.isNotificationsOpen;
     },
-    goToSearch() {
-      // Implementar navegación a búsqueda
+    goToNotifications() {
+      this.$router.push('/notifications');
     },
-    goToChat() {
-      // Implementar navegación a chat
-    },
-    goToProfile() {
-      this.$router.push('/profile');
-    }
-  }
-}
+  },
+};
 </script>
