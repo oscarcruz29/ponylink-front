@@ -38,7 +38,7 @@
             </div>
             <!-- Botón para cambiar foto de perfil -->
             <button 
-              @click="openGallery" 
+              @click="triggerFileInput" 
               class="mt-4 px-4 py-2 bg-blue-100 rounded-md border-b-2 border-slate-900 text-neutral-700 font-semibold shadow-md transition-transform transform hover:scale-105 flex items-center justify-center"
             >
               <img 
@@ -49,6 +49,12 @@
               />
               Editar
             </button>
+            <input 
+              type="file" 
+              ref="fileInput" 
+              @change="onFileChange" 
+              class="hidden"
+            />
           </div>
 
           <!-- Formulario de Datos Personales -->
@@ -772,9 +778,9 @@ methods: {
       formData.append('ubicacion', this.location);
       
       // Agregar la imagen de perfil si el usuario seleccionó una
-      /*if (this.profilePhoto) {
+      if (this.profilePhoto) {
         formData.append('profile_photo_path', this.profilePhoto);
-      }*/
+      }
 
       // Enviar los datos a la API
       axios.post('http://127.0.0.1:8000/api/editarInfoPersonal', formData, {
@@ -795,9 +801,14 @@ methods: {
       }
     });
   },
-
+  triggerFileInput() {
+      this.$refs.fileInput.click();
+  },
   onFileChange(event) {
-    this.profilePhoto = event.target.files[0];
+    const file = event.target.files[0];
+    if (file) {
+      this.profilePhoto = file; // Guarda la imagen seleccionada
+    }
   },
 togglePersonalProjectForm() {
     this.isPersonalProjectFormVisible = !this.isPersonalProjectFormVisible;
