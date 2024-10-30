@@ -22,6 +22,11 @@ export default {
     const isEditPasswordView = computed(() => route.path === '/edit-password');
     return { isAuthView, isDashboardView, isEditPasswordView };
   },
+  watch: {
+    $route(to) {
+      console.log('Route changed:', to.name); // Debugging line
+    }
+  }
 };
 </script>
 
