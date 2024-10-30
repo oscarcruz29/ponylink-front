@@ -36,14 +36,14 @@
           </div>
         </div>
         <nav class="flex items-center ml-auto space-x-4 pr-4"> 
-          <a href="#" class="focus:outline-none focus:ring-2 focus:ring-blue-500" tabindex="0">
+          <button @click="toggleNotifications" class="focus:outline-none focus:ring-2 focus:ring-blue-500" tabindex="0">
             <img
               loading="lazy"
               src="../assets/notifications.png"
               class="object-contain shrink-0 w-8 aspect-square transition-transform duration-200 hover:scale-105"
               alt="Notifications icon"
             />
-          </a>
+          </button>
           <a href="#" class="focus:outline-none focus:ring-2 focus:ring-blue-500" tabindex="0">
             <img
               loading="lazy"
@@ -53,6 +53,7 @@
             />
           </a>
         </nav>
+        <NotificationsComponent v-if="isNotificationsOpen" @close="closeNotifications" />
       </div>
     </div>
 
@@ -78,7 +79,7 @@
             alt="Chats"
           />
         </router-link>
-          <button class="focus:outline-none bg-white rounded-full p-2 shadow-md hover:bg-blue-50 transform hover:scale-110 hover:-translate-y-1 transition-all duration-200 active:scale-95">
+          <button @click="toggleNotifications" class="focus:outline-none bg-white rounded-full p-2 shadow-md hover:bg-blue-50 transform hover:scale-110 hover:-translate-y-1 transition-all duration-200 active:scale-95">
             <img 
               loading="lazy" 
               src="../assets/notifications.png" 
@@ -106,6 +107,7 @@ builder-component {
 }
 header {
   background-color: #f9f9f9;
+  z-index: 999; /* Added z-index */
 }
 .logop {
   transform: scale(3); 
@@ -117,8 +119,13 @@ header {
 
 
 <script>
+import NotificationsComponent from './NotificationsComponent.vue';
+
 export default {
   name: 'NavbarComponent',
+  components: {
+    NotificationsComponent,
+  },
   data() {
     return {
       isNotificationsOpen: false,
@@ -127,6 +134,9 @@ export default {
   methods: {
     toggleNotifications() {
       this.isNotificationsOpen = !this.isNotificationsOpen;
+    },
+    closeNotifications() {
+      this.isNotificationsOpen = false;
     },
     goToNotifications() {
       this.$router.push('/notifications');
