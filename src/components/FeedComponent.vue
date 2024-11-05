@@ -145,7 +145,6 @@
 
 
 <div class="flex flex-row justify-start sm:justify-end gap-3 sm:gap-4">
- <div class="flex flex-row justify-start sm:justify-end gap-3 sm:gap-4">
    <!-- Botón "Me gusta" -->
    <button 
  @click="toggleLike(post)"
@@ -165,39 +164,58 @@
      Me gusta
    </button>
  
- <button class="flex items-center justify-center text-[#001839] hover:bg-gray-100 p-2 rounded-lg">
-   <img loading="lazy" src="../assets/comentar.png" alt="Comentar" class="w-5 h-5 mr-1" />
-   Comentar
- </button>
+   <button @click="toggleComments(post)" class="flex items-center justify-center text-[#001839] hover:bg-gray-100 p-2 rounded-lg">
+  <img loading="lazy" src="../assets/comentar.png" alt="Comentar" class="w-5 h-5 mr-1" />
+  Comentar
+</button>
+
  <button class="flex items-center justify-center text-[#001839] hover:bg-gray-100 p-2 rounded-lg">
    <img loading="lazy" src="../assets/compartir.png" alt="Compartir" class="w-5 h-5 mr-1" />
    Compartir
  </button>
 </div>
    </div>
- </div>
+   <div v-if="post.showComments" class="mt-4">
+        <CommentSection :postId="post.id" />
+      </div>
  </section>
 </div>
 
    </main>
 
-   <!-- Columna de Chat (derecha) -->
-   <aside class="hidden md:flex flex-col w-1/3 max-w-[350px] bg-gradient-to-br from-[#E6F0FF] to-[#CCE2FF] rounded-lg shadow-xl border border-gray-300 p-4 ml-auto">
-     <ChatsComponent />
-   </aside>
- </div>
+<!-- Columna de Chat (derecha) -->
+<aside class="sidebar">
+      <ChatsComponent @chat-selected="handleChatSelected" />
+    </aside>
+
+    <main class="feed">
+      <!-- Contenido del feed -->
+    </main>
+
+    <!-- Ventana de Chat -->
+    <ChatWindow
+      v-if="selectedChat"
+      :chatUser="selectedChat.name"
+      :chatId="selectedChat.id"
+      @close="selectedChat = null"
+    />
+  </div>
 </template>
 
 <script>
 import ChatsComponent from './ChatsComponent.vue';
-
+import ChatWindow from './ChatWindow.vue';
+import CommentSection from './CommentSection.vue';
 export default {
  name: 'FeedComponent',
  components: {
    ChatsComponent,
+   CommentSection,
+   ChatWindow,
  },
  data() {
    return {
+    
      events: [
        { 
          title: 'Lanzamiento del Proyecto X', 
@@ -212,29 +230,35 @@ export default {
      ],
      posts: [
        { 
+         id: 1,
          type: 'job', 
          title: 'Oferta de trabajo: Desarrollador Frontend', 
          content: 'Estamos buscando un desarrollador frontend con experiencia en frameworks modernos como Vue.js. El candidato ideal deberá colaborar con diseñadores y desarrolladores backend para crear interfaces atractivas y funcionales.', 
          buttonText: 'Aplicar ahora',
          liked: false,
          isAnimatingLike: false,
+         showComments: false,
           
        },
        { 
+         id: 2,
          type: 'status', 
          title: 'Cambio de estado', 
          content: 'He actualizado mi estado para reflejar mi situación actual. Estoy "En busca de trabajo" y abierto a nuevas oportunidades donde pueda seguir desarrollándome profesionalmente.', 
          status: 'En busca de trabajo',
          liked: false,
          isAnimatingLike: false,
+         showComments: false,
        },
        { 
+         id: 3,
          type: 'status', 
          title: 'Cambio de estado', 
          content: 'He actualizado mi estado para reflejar mi situación actual. Estoy "Pendiente" y abierto a nuevas oportunidades donde pueda seguir desarrollándome profesionalmente.', 
          status: 'Pendiente' ,
          liked: false,
          isAnimatingLike: false,
+         showComments: false,
        },
      ],
      chats: [
@@ -242,10 +266,16 @@ export default {
        { name: 'Carlos', message: '¿Revisaste el reporte?', avatar: 'https://via.placeholder.com/50' },
      ],
      isSidebarOpen: false, 
-
+     selectedChat: null, // Almacena el chat seleccionado
    };
  },
  methods: {
+  handleChatSelected(chat) {
+      this.selectedChat = chat; // Establece el chat seleccionado para mostrar la ventana
+    },
+  toggleComments(post) {
+      post.showComments = !post.showComments;
+    },
    toggleSidebar() {
      this.isSidebarOpen = !this.isSidebarOpen;
    },
@@ -336,4 +366,16 @@ button.md\:hidden {
 }
 
 /* If there are any other elements with z-index, adjust accordingly */
+.feed {
+  display: flex;
+}
+.post-container {
+  border: 1px solid #e5e7eb;
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: #ffffff;
+}
+.post-actions button.animate-like {
+  /* Definir animación para "Me gusta" si es necesario */
+}
 </style>
