@@ -100,6 +100,20 @@
                 aria-label="Tu ubicación"
               />
             </div>
+
+            <!-- Nuevo Campo Rol de Usuario -->
+            <div class="flex flex-col space-y-2">
+              <label for="userRole" class="text-xl font-bold text-slate-900 pl-2">Rol</label>
+              <select
+                id="userRole"
+                v-model="userRole"
+                class="px-4 py-4 w-full bg-blue-100 rounded-md border-b-2 border-slate-900 text-neutral-700"
+                aria-label="Selecciona tu rol"
+              >
+                <option value="solicitante">Solicitante</option>
+                <option value="empleador">Empleador</option>
+              </select>
+            </div>
           </form>
         </div>
 
@@ -725,8 +739,8 @@ data() {
     isHardSkillFormVisible: false,
     isLanguageFormVisible: false,
     isPersonalProjectFormVisible: false,
-    isAcademicProjectFormVisible: false
-    
+    isAcademicProjectFormVisible: false,
+    userRole: 'solicitante' // Nuevo campo para el rol del usuario
   };
 },
 methods: {
@@ -755,8 +769,13 @@ methods: {
     this.isLanguageFormVisible = !this.isLanguageFormVisible;
   },
   guardarInformacion() {
+  // Incluir el rol del usuario al guardar la información
+  const profileData = {
+    // ...existing data...
+    role: this.userRole
+  };
   // Aquí recolectas los datos y los envías a la API o los manejas como prefieras.
-  console.log("Información guardada exitosamente.");
+  console.log("Información guardada exitosamente.", profileData);
 },
 togglePersonalProjectForm() {
     this.isPersonalProjectFormVisible = !this.isPersonalProjectFormVisible;
