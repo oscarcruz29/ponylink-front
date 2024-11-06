@@ -7,31 +7,34 @@
        'md:relative md:translate-x-0'
      ]"
    >
-     <header class="flex items-center justify-between bg-[#001839] text-white p-4">
-       <h2 class="text-xl font-semibold">Eventos & Proyectos</h2>
-       <!-- Botón de cerrar solo en móviles -->
-       <button 
-         class="md:hidden text-2xl" 
-         @click="toggleSidebar"
-         aria-label="Cerrar menú"
-       >
-         &times;
-       </button>
-     </header>
+   <header class="flex items-center justify-between bg-[#001839] text-white p-4">
+        <h2 class="text-xl font-semibold">Eventos & Proyectos</h2>
+        <!-- Botón de cerrar solo en móviles -->
+        <button 
+          class="md:hidden text-2xl" 
+          @click="toggleSidebar"
+          aria-label="Cerrar menú"
+        >
+          &times;
+        </button>
+      </header>
 
-     <div class="p-4 space-y-4">
-       <div
-         v-for="(event, index) in events"
-         :key="index"
-         class="rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 border border-gray-200"
-       >
-         <img :src="event.image" alt="Imagen del evento" class="w-full h-32 object-cover" />
-         <div class="p-4">
-           <h3 class="text-lg font-semibold text-[#001839]">{{ event.title }}</h3>
-           <p class="text-sm text-gray-500 mt-2">{{ event.description }}</p>
-           <button class="mt-4 w-full bg-[#001839] text-white rounded-md py-2 hover:bg-[#A9C8E0] transition-colors">
-             Ver más
-           </button>
+      <div class="p-4 space-y-4">
+        <div
+          v-for="event in events"
+          :key="event.id"
+          class="rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 border border-gray-200"
+        >
+          <img :src="event.image" alt="Imagen del evento" class="w-full h-32 object-cover" />
+          <div class="p-4">
+            <h3 class="text-lg font-semibold text-[#001839]">{{ event.title }}</h3>
+            <p class="text-sm text-gray-500 mt-2">{{ event.description }}</p>
+            <button 
+              class="mt-4 w-full bg-[#001839] text-white rounded-md py-2 hover:bg-[#A9C8E0] transition-colors"
+              @click="openEventDetails(event)"
+            >
+              Ver más
+            </button>
          </div>
        </div>
      </div>
@@ -102,8 +105,8 @@
     
      <div class="space-y-4">
  <section
-   v-for="(post, index) in posts"
-   :key="index"
+   v-for="post in posts"
+   :key="post.id"
    class="flex flex-col rounded-lg w-full max-w-[1000px] bg-white shadow-lg border border-[#A7C7E0] p-6 mb-6 mt-2 transition duration-200 transform hover:shadow-xl hover:bg-[#F8FBFF]"
  >
    <header class="flex gap-6 items-start">
@@ -145,7 +148,6 @@
 
 
 <div class="flex flex-row justify-start sm:justify-end gap-3 sm:gap-4">
- <div class="flex flex-row justify-start sm:justify-end gap-3 sm:gap-4">
    <!-- Botón "Me gusta" -->
    <button 
  @click="toggleLike(post)"
@@ -165,115 +167,164 @@
      Me gusta
    </button>
  
- <button class="flex items-center justify-center text-[#001839] hover:bg-gray-100 p-2 rounded-lg">
-   <img loading="lazy" src="../assets/comentar.png" alt="Comentar" class="w-5 h-5 mr-1" />
-   Comentar
- </button>
+   <button @click="toggleComments(post)" class="flex items-center justify-center text-[#001839] hover:bg-gray-100 p-2 rounded-lg">
+  <img loading="lazy" src="../assets/comentar.png" alt="Comentar" class="w-5 h-5 mr-1" />
+  Comentar
+</button>
+
  <button class="flex items-center justify-center text-[#001839] hover:bg-gray-100 p-2 rounded-lg">
    <img loading="lazy" src="../assets/compartir.png" alt="Compartir" class="w-5 h-5 mr-1" />
    Compartir
  </button>
 </div>
    </div>
- </div>
+   <div v-if="post.showComments" class="mt-4">
+        <CommentSection :postId="post.id" />
+      </div>
  </section>
 </div>
 
    </main>
 
-   <!-- Columna de Chat (derecha) -->
-   <aside class="hidden md:flex flex-col w-1/3 max-w-[350px] bg-gradient-to-br from-[#E6F0FF] to-[#CCE2FF] rounded-lg shadow-xl border border-gray-300 p-4 ml-auto">
-     <ChatsComponent />
-   </aside>
- </div>
+<!-- Columna de Chat (derecha) -->
+<aside class="sidebar">
+      <ChatsComponent @chat-selected="handleChatSelected" />
+    </aside>
+
+    <main class="feed">
+      <!-- Contenido del feed -->
+    </main>
+
+    <!-- Ventana de Chat -->
+    <ChatWindow
+      v-if="selectedChat"
+      :chatUser="selectedChat.name"
+      :chatId="selectedChat.id"
+      @close="selectedChat = null"
+    />
+
+    <!-- Ventana de Detalles del Evento -->
+    <EventDetails
+      v-if="selectedEvent"
+      :event="selectedEvent"
+      @close="selectedEvent = null"
+      
+    />
+  </div>
 </template>
 
 <script>
 import ChatsComponent from './ChatsComponent.vue';
+import ChatWindow from './ChatWindow.vue';
+import CommentSection from './CommentSection.vue';
+import EventDetails from './EventDetails.vue'; // Importa el nuevo componente
 
 export default {
- name: 'FeedComponent',
- components: {
-   ChatsComponent,
- },
- data() {
-   return {
-     events: [
-       { 
-         title: 'Lanzamiento del Proyecto X', 
-         description: 'Únete al lanzamiento de nuestro nuevo proyecto.', 
-         image: 'https://via.placeholder.com/300x150?text=Proyecto+X' 
-       },
-       { 
-         title: 'Conferencia de Tecnología', 
-         description: 'No te pierdas nuestra conferencia el próximo viernes.', 
-         image: 'https://via.placeholder.com/300x150?text=Proyecto+X' 
-       },
-     ],
-     posts: [
-       { 
-         type: 'job', 
-         title: 'Oferta de trabajo: Desarrollador Frontend', 
-         content: 'Estamos buscando un desarrollador frontend con experiencia en frameworks modernos como Vue.js. El candidato ideal deberá colaborar con diseñadores y desarrolladores backend para crear interfaces atractivas y funcionales.', 
-         buttonText: 'Aplicar ahora',
-         liked: false,
-         isAnimatingLike: false,
-          
-       },
-       { 
-         type: 'status', 
-         title: 'Cambio de estado', 
-         content: 'He actualizado mi estado para reflejar mi situación actual. Estoy "En busca de trabajo" y abierto a nuevas oportunidades donde pueda seguir desarrollándome profesionalmente.', 
-         status: 'En busca de trabajo',
-         liked: false,
-         isAnimatingLike: false,
-       },
-       { 
-         type: 'status', 
-         title: 'Cambio de estado', 
-         content: 'He actualizado mi estado para reflejar mi situación actual. Estoy "Pendiente" y abierto a nuevas oportunidades donde pueda seguir desarrollándome profesionalmente.', 
-         status: 'Pendiente' ,
-         liked: false,
-         isAnimatingLike: false,
-       },
-     ],
-     chats: [
-       { name: 'Ana', message: 'Hola, ¿cómo estás?', avatar: 'https://via.placeholder.com/50' },
-       { name: 'Carlos', message: '¿Revisaste el reporte?', avatar: 'https://via.placeholder.com/50' },
-     ],
-     isSidebarOpen: false, 
+  name: 'FeedComponent',
+  components: {
+    ChatsComponent,
+    CommentSection,
+    ChatWindow,
+    EventDetails,
+  },
+  data() {
+    return {
+      events: [
+        { 
+          title: 'Lanzamiento del Proyecto X', 
+          description: 'Únete al lanzamiento de nuestro nuevo proyecto.', 
+          image: 'https://via.placeholder.com/300x150?text=Proyecto+X' 
+        },
+        { 
+          title: 'Conferencia de Tecnología', 
+          description: 'No te pierdas nuestra conferencia el próximo viernes.', 
+          image: 'https://via.placeholder.com/300x150?text=Proyecto+X' 
+        },
+      ],
+      posts: [
+        { 
+          id: 1,
+          type: 'job', 
+          title: 'Oferta de trabajo: Desarrollador Frontend', 
+          content: 'Estamos buscando un desarrollador frontend con experiencia en frameworks modernos como Vue.js. El candidato ideal deberá colaborar con diseñadores y desarrolladores backend para crear interfaces atractivas y funcionales.', 
+          buttonText: 'Aplicar ahora',
+          liked: false,
+          isAnimatingLike: false,
+          showComments: false,
+        },
+        { 
+          id: 2,
+          type: 'status', 
+          title: 'Cambio de estado', 
+          content: 'He actualizado mi estado para reflejar mi situación actual. Estoy "En busca de trabajo" y abierto a nuevas oportunidades donde pueda seguir desarrollándome profesionalmente.', 
+          status: 'En busca de trabajo',
+          liked: false,
+          isAnimatingLike: false,
+          showComments: false,
+        },
+        { 
+          id: 3,
+          type: 'status', 
+          title: 'Cambio de estado', 
+          content: 'He actualizado mi estado para reflejar mi situación actual. Estoy "Pendiente" y abierto a nuevas oportunidades donde pueda seguir desarrollándome profesionalmente.', 
+          status: 'Pendiente',
+          liked: false,
+          isAnimatingLike: false,
+          showComments: false,
+        },
+      ],
+      chats: [
+        { name: 'Ana', message: 'Hola, ¿cómo estás?', avatar: 'https://via.placeholder.com/50' },
+        { name: 'Carlos', message: '¿Revisaste el reporte?', avatar: 'https://via.placeholder.com/50' },
+      ],
+      isSidebarOpen: false, 
+      selectedChat: null,
+      selectedEvent: null, // Almacena el evento seleccionado 
+    };
+  },
+  methods: {
+    openEventDetails(event) {
+      this.selectedEvent = event; // Establece el evento seleccionado
+    },
+    // Opcional: manejar el interés del usuario
+    // handleInterested(eventId) {
+    //   console.log(`Usuario está interesado en el evento ${eventId}`);
+    //   // Implementa la lógica necesaria, como una petición al backend
+    // },
 
-   };
- },
- methods: {
-   toggleSidebar() {
-     this.isSidebarOpen = !this.isSidebarOpen;
-   },
-   toggleLike(post) {
-     post.liked = !post.liked;
-     post.isAnimatingLike = true; // Activa la animación
+    handleChatSelected(chat) {
+      this.selectedChat = chat; 
+    },
+    toggleComments(post) {
+      post.showComments = !post.showComments;
+    },
+    toggleSidebar() {
+      this.isSidebarOpen = !this.isSidebarOpen;
+    },
+    toggleLike(post) {
+      post.liked = !post.liked;
+      post.isAnimatingLike = true;
 
-     
-     setTimeout(() => {
-       post.isAnimatingLike = false;
-     }, 300);
-     
-     // lógica para enviar el estado al backend
-   },
-   getStatusClass(status) {
-     switch (status) {
-       case 'En busca de trabajo':
-         return 'bg-green-100 text-green-800';
-       case 'Ocupado':
-         return 'bg-red-100 text-red-800';
-       case 'Pendiente':
-         return 'bg-yellow-100 text-yellow-800';
-       default:
-         return 'bg-gray-100 text-gray-800';
-     }
-   },
- },
-};
+      setTimeout(() => {
+        post.isAnimatingLike = false;
+      }, 300);
+      
+      // lógica para enviar el estado al backend
+    },
+    getStatusClass(status) {
+      switch (status) {
+        case 'En busca de trabajo':
+          return 'bg-green-100 text-green-800';
+        case 'Ocupado':
+          return 'bg-red-100 text-red-800';
+        case 'Pendiente':
+          return 'bg-yellow-100 text-yellow-800';
+        default:
+          return 'bg-gray-100 text-gray-800';
+      }
+    },
+  } // Removed extra closing brace here
+}; // Correctly closing export default
 </script>
 
 <style scoped>
@@ -336,4 +387,16 @@ button.md\:hidden {
 }
 
 /* If there are any other elements with z-index, adjust accordingly */
+.feed {
+  display: flex;
+}
+.post-container {
+  border: 1px solid #e5e7eb;
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: #ffffff;
+}
+.post-actions button.animate-like {
+  /* Definir animación para "Me gusta" si es necesario */
+}
 </style>
