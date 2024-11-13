@@ -1,5 +1,5 @@
 // tests/unit/EventDetails.spec.js
-import { shallowMount } from '@vue/test-utils';
+import { shallowMount, mount } from '@vue/test-utils';
 import EventDetails from '@/components/EventDetails.vue';
 
 describe('EventDetails.vue', () => {
@@ -10,7 +10,7 @@ describe('EventDetails.vue', () => {
     image: 'https://via.placeholder.com/300x150?text=Evento',
   };
 
-  beforeEach(() => {
+   beforeEach(() => {
     jest.spyOn(window, 'alert').mockImplementation(() => {});
   });
 
@@ -31,14 +31,16 @@ describe('EventDetails.vue', () => {
   });
 
   it('muestra una alerta al hacer clic en "Interesado en asistir"', async () => {
-    const wrapper = shallowMount(EventDetails, {
+    const wrapper = mount(EventDetails, {
       props: { event },
     });
 
-    // Use text() matcher instead of :contains
-    const button = wrapper.find('button');
+    // You can remove the console.log if not needed
+    // console.log(wrapper.html());
+
+    const button = wrapper.find('button[aria-label="express-interest"]');
     await button.trigger('click');
-    
+
     expect(window.alert).toHaveBeenCalledWith(
       `Has expresado interés en asistir a ${event.title}`
     );

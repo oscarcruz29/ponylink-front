@@ -167,7 +167,11 @@
      Me gusta
    </button>
  
-   <button @click="toggleComments(post)" class="flex items-center justify-center text-[#001839] hover:bg-gray-100 p-2 rounded-lg">
+   <button
+  @click="toggleComments(post)"
+  class="flex items-center justify-center text-[#001839] hover:bg-gray-100 p-2 rounded-lg"
+  aria-label="Comentar"
+>
   <img loading="lazy" src="../assets/comentar.png" alt="Comentar" class="w-5 h-5 mr-1" />
   Comentar
 </button>
