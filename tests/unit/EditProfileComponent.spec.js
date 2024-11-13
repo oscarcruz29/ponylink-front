@@ -1,4 +1,6 @@
-// tests/unit/EditProfileComponent.spec.js
+// Asegurar que al guardar la información del perfil, 
+//se incluye el rol del usuario (solicitante) en los datos guardados.
+
 import { shallowMount } from '@vue/test-utils';
 import EditProfileComponent from '@/components/EditProfileComponent.vue';
 
@@ -8,7 +10,7 @@ describe('EditProfileComponent.vue', () => {
       data() {
         return {
           userRole: 'solicitante',
-          // Otros datos necesarios...
+          
         };
       },
     });

@@ -1,4 +1,6 @@
-// tests/unit/ChatWindow.spec.js
+// Verificar que al enviar un nuevo mensaje en el chat, 
+//este se agrega correctamente al historial y el campo de entrada se limpia.
+
 import { shallowMount } from '@vue/test-utils';
 import ChatWindow from '@/components/ChatWindow.vue';
 

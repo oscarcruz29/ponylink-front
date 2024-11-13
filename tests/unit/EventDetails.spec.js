@@ -1,4 +1,5 @@
-// tests/unit/EventDetails.spec.js
+//Verificar que el componente muestra correctamente la información del evento 
+//(título, descripción e imagen).
 import { shallowMount, mount } from '@vue/test-utils';
 import EventDetails from '@/components/EventDetails.vue';
 

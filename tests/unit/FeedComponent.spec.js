@@ -1,4 +1,6 @@
-// tests/unit/FeedComponent.spec.js
+// Comprobar que al hacer clic en el botón "Comentar" de una publicación, 
+//la sección de comentarios se despliega.
+
 import { shallowMount } from '@vue/test-utils';
 import FeedComponent from '@/components/FeedComponent.vue';
 import CommentSection from '@/components/CommentSection.vue';
