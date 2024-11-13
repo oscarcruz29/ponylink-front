@@ -796,6 +796,15 @@ methods: {
         formData.append('profile_photo_path', this.profilePhoto);
       }
 
+      // Incluir el rol del usuario al guardar la información
+      const profileData = {
+        name: this.fullName,
+        email: this.email,
+        telefono: this.phone,
+        ubicacion: this.location,
+        role: this.userRole
+      };
+
       // Enviar los datos a la API
       axios.post('http://127.0.0.1:8000/api/editarInfoPersonal', formData, {
       headers: {
@@ -805,6 +814,7 @@ methods: {
     })
     .then(() => {
       alert('Perfil actualizado correctamente');
+      console.log("Información guardada exitosamente.", profileData);
     })
     .catch(error => {
       if (error.response && error.response.data) {
@@ -824,48 +834,6 @@ methods: {
       this.profilePhoto = file; // Guarda la imagen seleccionada
     }
   },
-guardarInformacion() {
-    // Crear el objeto FormData para enviar los datos y el archivo de imagen
-    const formData = new FormData();
-    formData.append('name', this.fullName);
-    formData.append('email', this.email);
-    formData.append('telefono', this.phone);
-    formData.append('ubicacion', this.location);
-    
-    // Agregar la imagen de perfil si el usuario seleccionó una
-    if (this.profilePhoto) {
-      formData.append('profile_photo_path', this.profilePhoto);
-    }
-
-    // Incluir el rol del usuario al guardar la información
-    const profileData = {
-      name: this.fullName,
-      email: this.email,
-      telefono: this.phone,
-      ubicacion: this.location,
-      role: this.userRole
-    };
-
-    // Enviar los datos a la API
-    axios.post('http://127.0.0.1:8000/api/editarInfoPersonal', formData, {
-    headers: {
-      'Authorization': `Bearer ${localStorage.getItem('token')}`,
-      'Content-Type': 'multipart/form-data',
-    },
-  })
-  .then(() => {
-    alert('Perfil actualizado correctamente');
-    console.log("Información guardada exitosamente.", profileData);
-  })
-  .catch(error => {
-    if (error.response && error.response.data) {
-      console.error('Errores de validación:', error.response.data.errors); // Muestra los errores específicos
-      alert('Hubo un problema al actualizar el perfil: ' + JSON.stringify(error.response.data.errors));
-    } else {
-      alert('Hubo un problema al actualizar el perfil');
-    }
-  });
-},
 togglePersonalProjectForm() {
     this.isPersonalProjectFormVisible = !this.isPersonalProjectFormVisible;
   },
