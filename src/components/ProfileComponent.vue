@@ -198,7 +198,7 @@ export default {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
           },
-          timeout: 5000 // 5 segundos de timeout
+          timeout: 10000 // 5 segundos de timeout
         });
         this.profile = response.data;
       } catch (error) {
