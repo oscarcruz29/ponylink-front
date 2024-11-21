@@ -4,34 +4,31 @@
       <article class="flex flex-col items-center px-14 pt-3 pb-14 w-full bg-white rounded-3xl shadow-lg max-md:px-5 max-md:max-w-full">
         <!-- Imagen del perfil -->
         <div class="flex justify-center mt-6">
-  <div class="bg-red-600 p-2 rounded-full"> <!-- Contenedor con fondo rojo y padding -->
-    <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/c2e092f7a63085f6cb55dbf46c8056c4b4a777d578f2d31c06d9747031a1f64f?placeholderIfAbsent=true&apiKey=55e491f87d61487b9b7b3861f7502d13" alt="Profile picture of Nadia Perez" class="object-cover rounded-full w-[160px] h-[160px] shadow-md" /> <!-- Tamaño de imagen incrementado -->
-  </div>
-</div>
-
+          <div class="bg-red-600 p-2 rounded-full">
+            <img :src="profile.photoUrl || 'ruta/de/imagen/por/defecto.jpg'" alt="Foto de perfil" class="object-cover rounded-full w-[160px] h-[160px] shadow-md" />
+          </div>
+        </div>
         
         <!-- Nombre del perfil -->
         <h1 class="mt-4 text-4xl font-bold text-slate-900 text-center">
-          {{ profile.name || 'Nadia Perez' }}
+          {{ profile.name || 'Nombre por defecto' }}
         </h1>
-<!-- Íconos de contacto (email, teléfono, ubicación) -->
-<div class="flex flex-col items-center mt-4 space-y-4">
-  <div class="flex items-center space-x-3 w-full justify-start">
-    <img src="../assets/correo.png" alt="Email icon" class="w-6 h-6">
-    <span class="text-slate-900 text-lg">{{ profile.email || 'nadia.perez@example.com' }}</span>
-  </div>
-  
-  <div class="flex items-center space-x-3 w-full justify-start">
-    <img src="../assets/call.png" alt="Phone icon" class="w-6 h-6">
-    <span class="text-slate-900 text-lg">{{ profile.phone || '+123 456 7890' }}</span>
-  </div>
-  
-  <div class="flex items-center space-x-3 w-full justify-start">
-    <img src="../assets/ubicacion.png" alt="Location icon" class="w-6 h-6">
-    <span class="text-slate-900 text-lg">{{ profile.location || 'Ciudad, País' }}</span>
-  </div>
-</div>
-
+        
+        <!-- Íconos de contacto -->
+        <div class="flex flex-col items-center mt-4 space-y-4">
+          <div class="flex items-center space-x-3 w-full justify-start">
+            <img src="../assets/correo.png" alt="Email icon" class="w-6 h-6">
+            <span class="text-slate-900 text-lg">{{ profile.email || 'email@ejemplo.com' }}</span>
+          </div>
+          <div class="flex items-center space-x-3 w-full justify-start">
+            <img src="../assets/call.png" alt="Phone icon" class="w-6 h-6">
+            <span class="text-slate-900 text-lg">{{ profile.phone || '+00 000 0000' }}</span>
+          </div>
+          <div class="flex items-center space-x-3 w-full justify-start">
+            <img src="../assets/ubicacion.png" alt="Location icon" class="w-6 h-6">
+            <span class="text-slate-900 text-lg">{{ profile.location || 'Ciudad, País' }}</span>
+          </div>
+        </div>
 
 <!-- Contenedor azul claro con los iconos centrados -->
 <div class="flex justify-center items-center px-10 py-4 mt-6 bg-sky-100 bg-opacity-70 rounded-lg shadow-lg w-full">
@@ -184,58 +181,25 @@
 
 
 <script>
-import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import { useRouter } from 'vue-router';
-import backgroundImage from '@/assets/fondo2.png'; 
-
 export default {
-  name: 'ProfileComponent',
-  setup() {
-    const profile = ref({});
-    const showConfig = ref(false); 
-    const router = useRouter(); 
-    const actions = [
-      { name: 'Contactar', icon: 'path_to_contact_icon', borderColor: 'border-sky-900' },
-      { name: 'Ver CV', icon: 'path_to_cv_icon', borderColor: 'border-sky-900' },
-      { name: 'Buscando', icon: 'path_to_search_icon', borderColor: 'border-green-600' },
-    ];
-    const fetchProfile = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get('/api/profile', {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-        profile.value = { ...profile.value, ...response.data };
-      } catch (error) {
-        const errorMessage = error.response && error.response.data && error.response.data.msg
-          ? error.response.data.msg
-          : 'Error al cargar el perfil';
-        alert(errorMessage);
-      }
-    };
-    const toggleConfig = () => {
-      showConfig.value = !showConfig.value; // Alterna la visibilidad de la sección de configuración
-    };
-    const goToEditProfile = () => {
-      router.push('/edit-profile'); // Redirige a la vista de edición de perfil
-    };
-    const goToEditPassword = () => {
-      router.push('/edit-password'); // Redirige a la vista de edición de contraseña
-    };
-    onMounted(fetchProfile);
+  data() {
     return {
-      profile,
-      actions,
-      showConfig,
-      toggleConfig,
-      goToEditProfile, 
-      backgroundImage,
-      fetchProfile,
-      goToEditPassword,
+      profile: {}
     };
+  },
+  methods: {
+    async fetchProfile() {
+      try {
+        const response = await axios.get('http://172.235.40.114/api/profile');
+        this.profile = response.data;
+      } catch (error) {
+        console.error('Error al obtener el perfil:', error);
+      }
+    }
+  },
+  mounted() {
+    this.fetchProfile();
   }
 };
 </script>
