@@ -193,7 +193,7 @@ export default {
     async fetchProfile() {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('https://172.235.40.114/api/profile', {
+        const response = await axios.get('/api/profile', {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
