@@ -88,7 +88,7 @@ export default {
     },
     async register() {
       try {
-        const response = await axios.post('http://127.0.0.1:8000/api/registrar', {
+        const response = await axios.post('http://172.235.40.114/api/registrar', {
           name: this.username,
           email: this.email,
           password: this.password
