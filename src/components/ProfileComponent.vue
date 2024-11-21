@@ -182,6 +182,7 @@
 
 <script>
 import axios from 'axios';
+
 export default {
   data() {
     return {
@@ -191,10 +192,25 @@ export default {
   methods: {
     async fetchProfile() {
       try {
-        const response = await axios.get('/api/profile');
+        const token = localStorage.getItem('token');
+        const response = await axios.get('http://172.235.40.114/api/profile', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          timeout: 5000 // 5 segundos de timeout
+        });
         this.profile = response.data;
       } catch (error) {
-        console.error('Error al obtener el perfil:', error);
+        if (error.code === 'ECONNABORTED') {
+          console.error('La solicitud ha excedido el tiempo de espera');
+        } else if (error.response) {
+          console.error('Error de respuesta:', error.response.data);
+        } else if (error.request) {
+          console.error('Error de conexión:', error.message);
+        } else {
+          console.error('Error:', error.message);
+        }
       }
     }
   },
