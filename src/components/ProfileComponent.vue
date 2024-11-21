@@ -191,7 +191,7 @@ export default {
   methods: {
     async fetchProfile() {
       try {
-        const response = await axios.get('http://172.235.40.114/api/profile');
+        const response = await axios.get('https://172.235.40.114/api/profile');
         this.profile = response.data;
       } catch (error) {
         console.error('Error al obtener el perfil:', error);
